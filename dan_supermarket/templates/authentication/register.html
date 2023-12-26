@@ -1,0 +1,29 @@
+{% extends 'base_auth.html' %}
+{% load static %}
+{% block content %}
+<form>
+    <img class="mb-4" src="{% static 'img/logo-clean.png' %}" alt="" width="300" height="200">
+    <h1 class="h3 mb-3 fw-normal">Register Account</h1>
+
+    <div class="form-floating">
+        <input type="email" class="form-control" id="emailField" placeholder="name@example.com">
+        <label for="emailField">Email address</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="passwordField" placeholder="Password">
+        <label for="passwordField">Password</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="confirmPasswordField" placeholder="Confirm Password">
+        <label for="confirmPasswordField">Confirm Password</label>
+    </div>
+
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">&copy; Daniel Cheong 2024</p>
+</form>
+{% endblock %}
