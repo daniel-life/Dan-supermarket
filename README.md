@@ -1,3 +1,3 @@
 # Dan-supermarket
 
-### work in progress. 
+## work in progress
