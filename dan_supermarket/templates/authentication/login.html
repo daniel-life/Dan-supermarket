@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <form>
+    {% csrf_token %}
     <img class="mb-4" src="{% static 'img/logo-clean.png' %}" alt="" width="300" height="200">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 

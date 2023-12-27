@@ -1,37 +1,35 @@
 {% extends 'base_auth.html' %}
 {% load static %}
 {% block content %}
-<form>
+{% include 'partials/_messages.html' %}
+<form action="{% url 'register' %}" method="post">
+    {% csrf_token %}
+
     <img class="mb-4" src="{% static 'img/logo-clean.png' %}" alt="" width="300" height="200">
     <h1 class="h3 mb-3 fw-normal">Create An Account</h1>
 
+
     <div class="form-floating">
-        <input type="text" class="form-control" id="usernameField" placeholder="Username" required>
+        <input type="text" class="form-control" name="username" value="{{fieldValues.username}}" id="usernameField" placeholder="Username" required>
         <label for="usernameField">Username</label>
     </div>
-    <div class="invalid-username-feedback" style="display: none"></div>
-    <p class="text-sm text-success usernameSuccess"></p>
+    <div class="invalid-username-feedback text-error" style="display: none"></div>
 
     <div class="form-floating">
-        <input type="email" class="form-control" id="emailField" placeholder="name@example.com" required>
+        <input type="email" class="form-control" name="email"  value="{{fieldValues.email}}" id="emailField" placeholder="name@example.com" required>
         <label for="emailField">Email address</label>
     </div>
-    <div class="invalid-email-feedback invalid-email-feedback" style="display: none"></div>
-    <p class="text-sm text-success emailSuccess"></p>
-    
+    <div class="invalid-email-feedback text-error" style="display: none"></div>
 
     <div class="form-floating">
-        <input type="password" class="form-control" id="passwordField"  name="password" required>
-        <label for="passwordField">Password</label>
-    </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="confirmPasswordField" name="password" required>
-        <label for="confirmPasswordField">Confirm Password</label>
+        <input type="password" class="form-control" name="password"  value="{{fieldValues.password}}" id="passwordField" required>
+        <label for="passwordField">Password</label>     
+        <i class="bi bi-eye" id="passwordToggle"></i>
     </div>
 
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Create Account</button>
+
+    <button class="w-100 btn btn-lg btn-primary submit-btn" type="submit">Create Account</button>
     <p class="mt-5 mb-3 text-muted">&copy; Daniel Cheong 2024</p>
 </form>
 <script src="{% static 'js/register.js' %}"></script>
-<script src="{% static 'js/password-toggle.js' %}"></script>
 {% endblock %}
