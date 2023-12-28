@@ -37,40 +37,47 @@ class EmailValidationView(View):
     
 
 
-# Create your views here.
+# This is a Django class-based view for user registration
 class RegistrationView(View):
+    # This method is called when a GET request is made to the view
     def get(self, request):
+        # Render the registration page
         return render(request, 'authentication/register.html')
 
+    # This method is called when a POST request is made to the view
     def post(self, request):
-        # GET USER DATA
-        #VALIDATE
-        # Create a user account
-        username  = request.POST.get('username')
-        email  = request.POST.get('email')
-        password  = request.POST.get('password')
+        # Retrieve the username, email, and password from the POST data
+        username  = request.POST['username']
+        email  = request.POST['email']
+        password  = request.POST['password']
 
+        # Store the POST data in a context dictionary
         context = {
             'fieldValues': request.POST
         }
 
+        # Check if the username already exists
         if not User.objects.filter(username=username).exists():
+            # Check if the email already exists
             if not User.objects.filter(email=email).exists():
+                # Check if the password is less than 6 characters long
                 if len(password) < 6:
+                    # If it is, show an error message and re-render the registration page
                     messages.error(request, 'Password too short')
                     return render(request, 'authentication/register.html', context)
                 
+                # If the username and email do not exist and the password is long enough,
+                # create a new user and set their password
                 user = User.objects.create_user(username=username, email=email)
                 user.set_password(password)
+                # Set the user as inactive until they verify their email
                 user.is_active = False
+                # Save the user object to the database
                 user.save()
 
-                # path to view
-                #- getting domain we are on
-                # - retrieve url to verification
-                # - encode uid
-                # - token
+                # Get the current site domain
                 current_site = get_current_site(request)
+                # Create the email body with necessary information for email verification
                 email_body = {
                     'user': user,
                     'domain': current_site.domain,
@@ -78,23 +85,30 @@ class RegistrationView(View):
                     'token': token_generator.make_token(user),
                 }
 
+                # Create the activation link
                 link = reverse('activate', kwargs={
                                'uidb64': email_body['uid'], 'token': email_body['token']})
 
-
+                # Create the email subject
                 email_subject = 'Activate your account'
+                # Create the full activation URL
                 activate_url = 'http://'+current_site.domain+link
                
-                email = EmailMessage(
+                # Create the email message
+                emailMessage = EmailMessage(
                     email_subject,
                     'Hi '+user.username + ',\nPlease the link below to activate your account \n'+ activate_url,
                     'noreply@dansupermarket.com',
                     [email],
                 )
-                email.send(fail_silently=False)
+                # Send the email
+                emailMessage.send(fail_silently=False)
+                # Show a success message
                 messages.success(request, 'Account Successfully created!')
+                # Render the registration page
                 return render(request, 'authentication/register.html')
             
+        # If the username or email already exists, re-render the registration page
         return render(request, 'authentication/register.html')
         
 
