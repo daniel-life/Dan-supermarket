@@ -75,4 +75,4 @@ passwordIcon.addEventListener("click", function () {
 
 setTimeout(function () {
   messages.style.display = "none";
-}, 3000);
+}, 5000);

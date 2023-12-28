@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
+from django.urls import reverse_lazy
 from dotenv import load_dotenv
 from django.contrib import messages
 
@@ -151,3 +152,6 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 
+LOGIN_URL=reverse_lazy('login')
+LOGIN_REDIRECT_URL = reverse_lazy('admin-dashboard')
+LOGOUT_REDIRECT_URL = reverse_lazy('login')

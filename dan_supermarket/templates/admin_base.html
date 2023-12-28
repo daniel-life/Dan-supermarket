@@ -19,14 +19,18 @@
 <body>
     {% include 'partials/_togglemode.html' %}
     {% include 'partials/_navbar.html' %}
+
+
     <div class="container-fluid">
+
         <div class="row">
             {% include 'partials/_sidebar.html' %}
+
+            <main role="main" class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                {% block content %} {% endblock %}
+            </main>
         </div>
     </div>
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        {% block content %} {% endblock %}
-    </main>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/chart.umd.js' %}"></script>
     <script src="{% static 'js/admin.js' %}"></script>
