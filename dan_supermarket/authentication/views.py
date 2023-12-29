@@ -37,7 +37,7 @@ class EmailValidationView(View):
     
 
 
-# This is a Django class-based view for user registration
+# This is a Django class-based view for customer registration
 class RegistrationView(View):
     # This method is called when a GET request is made to the view
     def get(self, request):
@@ -67,22 +67,22 @@ class RegistrationView(View):
                     return render(request, 'authentication/register.html', context)
                 
                 # If the username and email do not exist and the password is long enough,
-                # create a new user and set their password
-                user = User.objects.create_user(username=username, email=email)
-                user.set_password(password)
-                # Set the user as inactive until they verify their email
-                user.is_active = False
-                # Save the user object to the database
-                user.save()
+                # create a new customer and set their password
+                customer = User.objects.create_user(username=username, email=email)
+                customer.set_password(password)
+                # Set the customer as inactive until they verify their email
+                customer.is_active = False
+                # Save the customer object to the database
+                customer.save()
 
                 # Get the current site domain
                 current_site = get_current_site(request)
                 # Create the email body with necessary information for email verification
                 email_body = {
-                    'user': user,
+                    'customer': customer,
                     'domain': current_site.domain,
-                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                    'token': token_generator.make_token(user),
+                    'uid': urlsafe_base64_encode(force_bytes(customer.pk)),
+                    'token': token_generator.make_token(customer),
                 }
 
                 # Create the activation link
@@ -97,7 +97,7 @@ class RegistrationView(View):
                 # Create the email message
                 emailMessage = EmailMessage(
                     email_subject,
-                    'Hi '+user.username + ',\nPlease the link below to activate your account \n'+ activate_url,
+                    'Hi '+customer.username + ',\nPlease the link below to activate your account \n'+ activate_url,
                     'noreply@dansupermarket.com',
                     [email],
                 )
@@ -116,15 +116,15 @@ class VerificationView(View):
       def get(self, request, uidb64, token):
         try:
             id = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=id)
+            customer = User.objects.get(pk=id)
 
-            if not token_generator.check_token(user, token):
+            if not token_generator.check_token(customer, token):
                 return redirect('login'+'?message='+'Customer already activated')
-            if user.is_active:
+            if customer.is_active:
                 return redirect('login')
             
-            user.is_active = True
-            user.save()
+            customer.is_active = True
+            customer.save()
             messages.success(request, 'Account activated successfully')
             redirect('login')
         except Exception as e:
@@ -141,25 +141,25 @@ class LoginView(View):
         password = request.POST['password']
 
         if username and password:
-              # Check if the user exists
+              # Check if the customer exists
             try:
-               user = User.objects.get(username=username)
+               customer = User.objects.get(username=username)
             
             except User.DoesNotExist:
                 messages.error(request, 'Invalid credentials, try again')
                 return render(request, 'authentication/login.html')
             
-             # Check if the user is active
-            if not user.is_active:
+             # Check if the customer is active
+            if not customer.is_active:
                 messages.error(request, 'Account is not active, please check your email')
                 return render(request, 'authentication/login.html')
             
 
-            # Authenticate the user
-            user = auth.authenticate(username=username, password=password)
-            if user:
-                auth.login(request, user)
-                messages.success(request, 'Welcome, ' + user.get_username() + ' you are now logged in')
+            # Authenticate the customer
+            customer = auth.authenticate(username=username, password=password)
+            if customer:
+                auth.login(request, customer)
+                messages.success(request, 'Welcome, ' + customer.get_username() + ' you are now logged in')
                 return redirect('admin_dashboard')
 
             messages.error(request, 'Invalid credentials, try again')

@@ -1,5 +1,10 @@
 {% extends "admin_base.html" %}
-
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'admin_dashboard' %}">dashboard</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Add Products</li>
+  </ol>
+</nav>
 {% block content %}
     <h1>Add Item</h1>
 {% endblock %}
