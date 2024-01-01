@@ -1,0 +1,32 @@
+{% extends "admin_base.html" %}
+{% load static %}
+
+{% block content %}
+{% load static %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-10">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Add product
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <h1>Add Item</h1>
+  <form action="{% url 'admin_dashboard' %}" method="post">
+    
+  </form>
+
+
+</div>
+
+
+
+{% endblock %}

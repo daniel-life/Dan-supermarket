@@ -7,5 +7,5 @@ from django.views.decorators.cache import cache_control
 def index(request):
     return render(request, 'admin_dashboard/index.html')
 
-def add_item(request):
-    return render(request, 'admin_dashboard/add_item.html')
+def add_product(request):
+    return render(request, 'admin_dashboard/add_product.html')
